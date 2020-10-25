@@ -39,14 +39,22 @@ class LivestreamStudio:
 
    # def createFiles(self)
 
+   def clearCache(self):
+      self.Files = os.listdir(os.getcwd())
+      for file in self.Files:
+         if file != "main.py":
+            os.remove(file)
+
    def writeFiles(self):
       # Write lines to file
+
       for book in self.SavedVerseRequest:
-         fileName = "{}".format(book)
-         with open("{}.txt".format(str(fileName)), "a") as fileHandler:
+         fileName = book.replace(":", "")
+         # if os.path.exists(str(os.getcwd) + fileName + ".txt") == False:
+         #    os.makedirs("{}.txt".format(fileName))
+         with open("{}.txt".format(fileName), "w+") as fileHandler:
             for verses in self.SavedVerseRequest[book]:
                fileHandler.write(verses)
-            fileHandler.close()
    
 
    def checkSpecialCharacters(self, verse):
@@ -162,6 +170,7 @@ class LivestreamStudio:
 
 
 Livestream = LivestreamStudio()
+Livestream.clearCache()
 Livestream.makeRequest("Exodo", 3, 3, 5, "English")
 Livestream.makeRequest("Exodo", 4, 1, 3, "English")
 Livestream.makeRequest("2 Corintios", 7, 5, 8, "Spanish")
