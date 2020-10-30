@@ -43,7 +43,10 @@ class LivestreamStudio:
       self.Files = os.listdir(os.getcwd())
       for file in self.Files:
          if file != "main.py":
-            os.remove(file)
+            try:
+               os.remove(file)
+            except OSError:
+               pass
 
    def writeFiles(self):
       # Write lines to file
@@ -57,7 +60,7 @@ class LivestreamStudio:
                fileHandler.write(verses)
    
 
-   def checkSpecialCharacters(self, verse):
+   def checkSpecialCharacters(self, verse, initialFalseValue=False):
       # self.HtmlOutputReplace = ['(A)', '(B)']
       self.x41SpecialCharacter = '(A)'
       self.x42SpecialCharacter = '(B)'
@@ -91,6 +94,10 @@ class LivestreamStudio:
             # Format Correctly
             verse = verse.replace(verse[0], "{} ".format(verse[0]))
             print "Final Format: {}".format(verse)
+
+      if initialFalseValue == True:
+         if verse[0].isdigit() == True:
+            verse = verse.replace(verse[0], str(1))
       return verse
 
 
@@ -132,7 +139,7 @@ class LivestreamStudio:
       else:
          print "--------------- {} {}:{}:{} ----------------".format(book, chapter, verse1, verse2)
          self.requestCounter = verse1
-         while self.requestCounter <= verse2:
+         while self.requestCounter <= verse2+1:
             multiRequest = requests.get("https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest))
             print "URL: https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest)
             if "No results found." in multiRequest.text:
@@ -158,12 +165,15 @@ class LivestreamStudio:
                         # print "NO CHECKS: {}".format(e)
                         # print e.decode('latin')
                      # print e
-                     self.returnedOutput = self.checkSpecialCharacters(e)
+                     if self.requestCounter == 1:
+                        self.returnedOutput = self.checkSpecialCharacters(e, True)
+                     else:
+                        self.returnedOutput = self.checkSpecialCharacters(e)
                      if language == "English":
                         holdVerses.append(self.returnedOutput)
                      # print "{} -> Length: {}".format(self.returnedOutput, len(self.returnedOutput))
                self.requestCounter += 1
-               if self.requestCounter == verse2:
+               if self.requestCounter == verse2+1:
                   # print "Pass To Function: {}".format(holdVerses)
                   self.appendDictionary(book, chapter, holdVerses)
                   break
@@ -171,12 +181,9 @@ class LivestreamStudio:
 
 Livestream = LivestreamStudio()
 Livestream.clearCache()
-Livestream.makeRequest("Exodo", 3, 3, 5, "English")
-Livestream.makeRequest("Exodo", 4, 1, 3, "English")
-Livestream.makeRequest("2 Corintios", 7, 5, 8, "Spanish")
-Livestream.makeRequest("2 Corintios", 7, 5, 8, "English")
-Livestream.writeFiles()
-
-
-# 2 Corintios 7
+# Livestream.makeRequest("Exodo", 3, 3, 5, "English")
+# Livestream.makeRequest("Exodo", 4, 1, 3, "English")
+# Livestream.makeRequest("2 Corintios", 7, 5, 8, "Spanish")
+# Livestream.makeRequest("2 Corintios", 7, 5, 8, "English")
+# Livestream.writeFiles()
 
