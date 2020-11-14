@@ -5,7 +5,7 @@ import random
 import platform
 import os
 
-keyValues = {"A": ["BKSHDKJSHDJKSHKJ", "C", "skjhdkjashkjdhak", "djlksajdlkajsld", "sadlkasjdlkja"]}
+keyValues = {"A": ["BKSHDKJSHDJKSHKJAJSHKAJAAAAAAAAAAAA", "C", "skjhdkjashkjdhak", "djlksajdlkajsld", "sadlkasjdlkja"]}
 testWrite = []
 
 
@@ -51,12 +51,20 @@ for x in keyValues:
 
         if len(holdvalue) == 0:
             print "[+] List has nothing"
-            if len(innerList[loopIterator]) + len(innerList[loopIterator+1]) > 35:
+            try:
+                if len(innerList[loopIterator]) + len(innerList[loopIterator+1]) > 35:
+                    holdvalue.append(innerList[loopIterator])
+                    testWrite.append(holdvalue)
+                    holdvalue = []
+                    holdvalue.append(innerList[loopIterator+1])
+
+                else:
+                    holdvalue.extend((innerList[loopIterator], innerList[loopIterator+1]))
+                    print "[+] loopIterator {}".format(loopIterator)
+            except IndexError:
+                # IndexError: last element inside of list
+                print "[-] IndexError: {}".format(innerList[loopIterator])
                 holdvalue.append(innerList[loopIterator])
-            else:
-                holdvalue.extend((innerList[loopIterator], innerList[loopIterator+1]))
-                loopIterator += 2
-                print "[+] loopIterator {}".format(loopIterator)
         else:
             # print "-------------------------------------------------"
             # print "[+] Got Length: {}".format(len(innerList[loopIterator]) + len(innerList[loopIterator+1]))
