@@ -22,6 +22,10 @@ from bs4 import BeautifulSoup
 
 class LivestreamStudio:
    def __init__(self):
+      if platform.system() == "Windows":
+         os.system("cls")
+      else:
+         os.system("clear")
       self.Books = []
       self.LanguageKey = {"english":"ESV","spanish":"RVR1960"}
       self.FixedVersesNoHtml = []
@@ -30,12 +34,12 @@ class LivestreamStudio:
 
 
    def appendDictionary(self, book, chapter, verses):
-      print "appendDictionary: {}".format(verses)
+      # print "appendDictionary: {}".format(verses)
       self.SavedVerseRequest["{}:{}".format(book, chapter)] = verses
-      for saved in self.SavedVerseRequest:
-         print "saved values: {}".format(saved)
-         for s in self.SavedVerseRequest[saved]:
-            print "\t saved list: {}".format(s)
+      # for saved in self.SavedVerseRequest:
+      #    print "saved values: {}".format(saved)
+      #    for s in self.SavedVerseRequest[saved]:
+      #       print "\t saved list: {}".format(s)
 
    # def createFiles(self)
 
@@ -43,10 +47,11 @@ class LivestreamStudio:
       self.Files = os.listdir(os.getcwd())
       for file in self.Files:
          if file != "main.py":
-            try:
-               os.remove(file)
-            except OSError:
-               pass
+            if file != "test.py":
+               try:
+                  os.remove(file)
+               except OSError:
+                  pass
 
    def writeFiles(self):
       # Write lines to file
@@ -83,17 +88,17 @@ class LivestreamStudio:
       # else:
       
 
-      print "Verse: {}".format(verse)
+      # print "Verse: {}".format(verse)
       # remove spaces before start of string
       if verse[0] == " ":
          verse = verse[1:]
-         print "Removed Spaces: {}".format(verse)
+         # print "Removed Spaces: {}".format(verse)
 
       if verse[0].isdigit() == True:
          if verse[1].isalpha() == True:
             # Format Correctly
             verse = verse.replace(verse[0], "{} ".format(verse[0]))
-            print "Final Format: {}".format(verse)
+            # print "Final Format: {}".format(verse)
 
       if initialFalseValue == True:
          if verse[0].isdigit() == True:
@@ -122,7 +127,7 @@ class LivestreamStudio:
                try:
                   raise ValueError
                except ValueError:
-                  print "[-] Unable to fetch query for  {} {}:{}".format(book, chapter, self.requestCounter)
+                  print "[-] Unable to fetch query for  {} {}:{}".format(book, chapter, verse1)
                   exit(1)
          else:
             # print "Successful Request ({})".format(singleRequest.status_code)
@@ -141,7 +146,7 @@ class LivestreamStudio:
          self.requestCounter = verse1
          while self.requestCounter <= verse2+1:
             multiRequest = requests.get("https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest))
-            print "URL: https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest)
+            # print "URL: https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest)
             if "No results found." in multiRequest.text:
                try:
                   raise ValueError
@@ -181,9 +186,9 @@ class LivestreamStudio:
 
 Livestream = LivestreamStudio()
 Livestream.clearCache()
+Livestream.makeRequest("Job", 38, 3, 4, "Spanish")
 # Livestream.makeRequest("Exodo", 3, 3, 5, "English")
-# Livestream.makeRequest("Exodo", 4, 1, 3, "English")
+# Livestream.makeRequest("Exodo", 4, 1, 3, "Spanish")
 # Livestream.makeRequest("2 Corintios", 7, 5, 8, "Spanish")
 # Livestream.makeRequest("2 Corintios", 7, 5, 8, "English")
-# Livestream.writeFiles()
-
+Livestream.writeFiles()

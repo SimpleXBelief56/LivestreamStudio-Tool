@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <link rel="icon" href="../../../../favicon.ico"> -->
+
+    <title>ParseTheVerse: Home</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="{{ url_for('static',filename='css/style.css') }}" rel="stylesheet">
+  </head>
+
+  <body class="parse-body no-overflow">
+    <!-- NAVBAR -->
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="#">ParseTheVerse</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link" href="{{ url_for('home')}}">Home</a>
+                <a class="nav-item nav-link active" href="#">Parse</a>
+                <a class="nav-item nav-link" href="{{ url_for('features')}}">Features</a>
+                <a class="nav-item nav-link" href="#">Contact</a>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="page-title text-center">Parse Verses</h1>
+        </div>
+      </div>
+      <div class="row form-row-handler justify-content-center align-items-center">
+        <div class="col-lg-12">
+          <form >
+            <div class="form-row justify-content-center">
+              <div class="col-lg-5 mb-4">
+                <label for="book">Book</label>
+                <input type="text" class="form-control input-large" id="book" placeholder="Enter Book Name">
+              </div>
+            </div>
+            <div class="form-row justify-content-center">
+              <div class="col-lg-5 mb-4">
+                <label for="chapter">Chapter</label>
+                <input type="text" class="form-control" id="chapter" placeholder="Enter Chapter">
+              </div>
+            </div>
+            <div class="form-row justify-content-center">
+              <div class="col-lg-5 mb-4">
+                <label for="verse1">Verse 1</label>
+                <input type="text" class="form-control" id="verse1" placeholder="Enter Verse 1">
+              </div>
+            </div>
+            <div class="form-row justify-content-center">
+              <div class="col-lg-5 mb-4">
+                <label for="verse2">Verse 2</label>
+                <input type="text" class="form-control" id="verse2" placeholder="Enter Verse 2">
+              </div>
+            </div>
+            <div class="form-row justify-content-center">
+              <div class="col-lg-5 mb-4">
+                <label for="language">English or Spanish</label>
+                <input type="text" class="form-control" id="language" placeholder="Enter Verse 2">
+              </div>
+            </div>
+            <div class="form-row justify-content-center">
+              <div class="col-lg-5 text-center mt-3">
+                <a class="btn btn-lg btn-secondary btn-parse-submit" style="color: black;">Parse Verses</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="row h-50 progress-row justify-content-center align-items-center hide-out">
+        <div class="col-lg-12">
+          <p class="progress-val-text">0%</p>         
+          <div class="progress">
+            <div class="progress-bar w-0" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p class="progress-status"></p>
+        </div>
+      </div>
+      <div class="row justify-content-center hide-out" id="resultSection">
+        <!-- <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Psalm 119:1-176</h5>
+              <p class="card-text">2 Bienaventurados los que guardan sus testimonios, Y con todo el corazón le buscan; 3  Pues no hacen iniquidad Los que andan en sus caminos. 4  Tú encargaste Que sean muy guardados tus mandamientos. 5  !!Ojalá fuesen ordenados mis caminos Para guardar tus estatutos! 6 Entonces no sería yo avergonzado, Cuando atendiese a todos tus mandamientos. 7  Te alabaré con rectitud de corazón Cuando aprendiere tus justos juicios. 8  Tus estatutos guardaré; No me dejes enteramente.</p>
+              <a href="#" class="btn btn-primary">Copy</a>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+
+    
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='js/handler.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: .05rem solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  height: 100%;
+  background-color: #333;
+  /* background-color: rgb(255, 116, 116); */
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-pack: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  color: #fff;
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+  overscroll-behavior-y: none;
+  
+}
+
+.no-height{
+  height: unset;
+}
+
+.cover-container {
+  max-width: 42em;
+  height: 65% !important;
+}
+
+.navbar-brand{
+    font-size: 22px;
+}
+
+.nav-link, .navbar-brand{
+    color: white;
+    font-size: 22px;
+}
+
+.home-title, .home-description{
+  text-align: center;
+}
+
+label{
+  font-size: 30px;
+}
+
+.card{
+  background-color: rgb(69,69,69);
+  border: 4px solid #565656;
+}
+
+/* Design Ideas -- Parse Wizard Form Idea */
+.special-label{
+  font-size: 50px;
+}
+
+.form-wizard-tab{
+  display: none;
+}
+
+.form-wizard-tab.wizard-active{
+  display: flex;
+}
+
+
+.btn-previous{
+  opacity: 0.6;
+}
+
+.btn-previous:hover{
+  opacity: 1;
+}
+
+.btn-show{
+  visibility: unset;
+}
+
+.btn-hide{
+  visibility: hidden;
+}
