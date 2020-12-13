@@ -150,7 +150,7 @@ $(document).ready(function(){
                     progressBarStatus.innerHTML = val[1];
                     if(PreserveValue !== val[0]){
                         PreserveValue = val[0];
-                        console.log("success returned: "+ PreserveValue);
+                        console.log("success returned: "+ PreserveValue + " " + val[2]);
                     }
                     if(val[2] == "Done"){
                         progressBar.style.width = "100%";

@@ -431,7 +431,16 @@ class LivestreamStudio:
 
 
 
-   def makeRequest(self, book, chapter, verse1, verse2, language):      
+   def makeRequest(self, book, chapter, verse1, verse2, language):
+      self.group1_hasStarted = False
+      self.group2_hasStarted = False
+      self.group1_percentage = 0
+      self.group2_percentage = 0
+      self.book = ""
+      self.verse1 = 0
+      self.verse2 = 0
+      self.error_callback = "No-Error"
+
       # AJAX Request Percentage Count
       self.group1_hasStarted = True
 
