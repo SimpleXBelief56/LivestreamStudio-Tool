@@ -81,4 +81,71 @@ So, for example, if we want to request Psalm 119:10-50 in English, then we will 
 ```python
 def makeRequest("Psalm", 119, 10, 50, "English")
 ```
+***
+Once we got our verses, we run the html code through the BeautifulSoup Module in order to parse the text:
+```python
+HtmlParser = BeautifulSoup(multiRequest.content, 'lxml')
+```
+Then we find the verse, by finding a div with class name passage-content:
+```python
+commonElements = HtmlParser.find_all('div', {'class': 'passage-content'})
+```
+After we have got the specific html code that we need, we need to find the actual child-html code that contains the actual text. For this we iterate over the parent element, and proceed towards the child element. The only issue with this is that some chapters contain poetry format, which means text like this:
+```
+You have commanded your precepts
+    to be kept diligently.
+```
+Gets translated to this
+```
+You have commanded your preceptsto be kept diligently.
+```
+The reason for this is the break-tag inserted in between, and when we use BeautifulSoup in order to parse the HTML, that tag is ignored except for the non-breaking space, which is not ignored. In order to prevent this we need to replace the tag with the special unicode character for the **&nbsp** set by BeautifulSoup which is **\xa0**. That way when we proceed to replace the &nbsp, we can replace it with a space for parsing and formatting:
+```python
+for x in commonElements:
+     if x.find('div',{'class': 'poetry'}) is not None:
+        breakHtmlTag = x.find('br')
+        breakHtmlTag.string = u'\xa0'
+        print x.find("br")
+     c = x.findChildren('p')
+     for v in c:
+        m = v.text
+        if language == "English":
+           e = m.encode('ascii', 'ignore')
+           # print "Without checkSpecialCharacters: {}".format(e)
+        else:
+           e = m.encode('utf-8')
+           holdVerses.append(e)
+           # print "NO CHECKS: {}".format(e)
+           # print e.decode('latin')
+        # print e
+        if self.requestCounter == 1:
+           self.returnedOutput = self.checkSpecialCharacters(e, True)
+        else:
+           self.returnedOutput = self.checkSpecialCharacters(e)
+        if language == "English":
+           holdVerses.append(self.returnedOutput)
+        # print "{} -> Length: {}".format(self.returnedOutput, len(self.returnedOutput))
+  self.requestCounter += 1
+  if self.requestCounter == self.verse2+1:
+     # print "Pass To Function: {}".format(holdVerses)
+     print "[+] HoldVerses: {}".format(holdVerses)
+
+
+     #debug
+     print "[DEBUG]: holdverses loop"
+
+     for v in holdVerses:
+        holdVerses[holdVerses.index(v)] = holdVerses[holdVerses.index(v)].replace("\xc2\xa0", " ")
+
+     for vc in holdVerses:
+        # setUnicodeEncoding()
+        removeUnicodeEncoding()
+        print holdVerses[holdVerses.index(vc)]
+
+        if "     " in holdVerses[holdVerses.index(vc)]:
+           if "   " in holdVerses[holdVerses.index(vc)]:
+              holdVerses[holdVerses.index(vc)] = holdVerses[holdVerses.index(vc)].replace("    ", "").replace("   ","")
+           else:
+              holdVerses[holdVerses.index(vc)] = holdVerses[holdVerses.index(vc)].replace("    ", "")
+```
 
