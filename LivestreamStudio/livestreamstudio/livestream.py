@@ -80,6 +80,7 @@ class LivestreamStudio:
       self.SavedVerseRequest = {}
       self.HoldValue = ""
       self.verseHolders = []
+      self.error_callback = False
       self.group1_hasStarted = False
       self.group2_hasStarted = False
       self.group1_percentage = 0
@@ -123,6 +124,8 @@ class LivestreamStudio:
          holdvalue_counter = 0
          loopCounter = 0
          loopIterator = 0
+         # print innerListlength
+         # exit()
          for loopIterator in range(innerListlength):
             print "-------- TEST CONDITION {} ({}) --------".format(loopCounter, loopIterator)
             print "[+] Checking if (holdvalue) is empty"
@@ -210,6 +213,7 @@ class LivestreamStudio:
             # print holdvalue
 
       self.finish_parse_time = time.time() - start_parse_time
+      self.group2_percentage = int((float(loopCounter)/int(innerListlength)*0.5*100))
       self.testWrite.append(holdvalue)
       
 
@@ -221,29 +225,7 @@ class LivestreamStudio:
       # for saved in self.SavedVerseRequest:
       #    print "saved values: {}".format(saved)
       #    for s in self.SavedVerseRequest[saved]:
-      #       print "\t saved list: {}".format(s)
-
-   # def createFiles(self)
-
-   # def clearCache(self, returnFiles=False):
-   #    self.Files = os.listdir(os.getcwd())
-   #    if returnFiles == False:
-   #       for file in self.Files:
-   #          if file != "main.py":
-   #             if file != "test.py":
-   #                if file != "web":
-   #                   try:
-   #                      os.remove(file)
-   #                   except OSError:
-   #                      pass
-   #    else:
-   #       return self.Files
-
-
-   # def checkFilesExist(self, book, chapter, verse1, verse2):
-   #    self.FilesDirectory = self.clearCache(returnFiles=True)
-   #    if verse2 == None:
-      
+      #       print "\t saved list: {}".format(s)      
 
    def writeFiles(self):
       # Write lines to file
@@ -281,15 +263,17 @@ class LivestreamStudio:
 
    def getPercentage(self):
       self.percentage = 0
+      if self.error_callback == True:
+         return (self.percentage, "404", "ERROR: Unable To Fetch Query")
       if self.group1_hasStarted:
          if self.group2_hasStarted:
-            self.percentage = self.group1_percentage + self.group2_percentage + 1
+            self.percentage = self.group1_percentage + self.group2_percentage
             if self.percentage != 100:
                return (self.percentage, self.http_GET_Status, "In-Progress")
             else:
                return (self.percentage, self.http_GET_Status, "Done")
          else:
-            self.percentage = self.group1_percentage + 1
+            self.percentage = self.group1_percentage
             if self.percentage != 100:
                return (self.percentage, self.http_GET_Status, "In-Progress")
             else:
@@ -432,6 +416,7 @@ class LivestreamStudio:
 
 
    def makeRequest(self, book, chapter, verse1, verse2, language):
+      self.SavedVerseRequest = {}
       self.group1_hasStarted = False
       self.group2_hasStarted = False
       self.group1_percentage = 0
@@ -498,7 +483,7 @@ class LivestreamStudio:
                   raise ValueError
                except ValueError:
                   print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.requestCounter)
-                  exit(1)
+                  self.error_callback = True
             else:
                # print "Successful Request ({})".format(multiRequest.status_code)
                HtmlParser = BeautifulSoup(multiRequest.content, 'lxml')
@@ -563,37 +548,4 @@ class LivestreamStudio:
 
 clearTerminal()
 setUnicodeEncoding()
-# Livestream = LivestreamStudio()
-# Livestream.clearCache()
-
-# book = raw_input("Book: ")
-# chapter = input("Chapter: ")
-# verse1 = input("Verse 1: ")
-# verse2 = input("Verse 2 (If None Enter 0): ")
-
-
-# Livestream.makeRequest("Psalm", 51, 1, 19, "English")
-# Livestream.makeRequest("Psalm", 51, 1, 19, "Spanish")
-
-# Livestream.makeRequest("Hebrews", 12, 1, 11, "English")
-# if verse2 == 0:
-#    Livestream.makeRequest(book, chapter, verse1, None, "English")
-# else:
-#    Livestream.makeRequest(book, chapter, verse1, verse2, "Spanish")
-# Livestream.makeRequest("2 Corintios", 7, 5, 8, "Spanish")
-# Livestream.makeRequest("2 Corintios", 7, 5, 8, "English")
-# Livestream.get()
-
-
-
-# print "----------- PROGRAM DEBUG ------------"
-# finish_time = time.time() - start_time
-# print "Verse Parse Time: {} seconds".format(str(Livestream.finish_parse_time)[:4])
-# print "Program Runtime: {} seconds".format(str(finish_time)[:4])
-# print sys.argv
-# PressEnterToContinue()
-
-
-
-
 removeUnicodeEncoding()

@@ -163,10 +163,19 @@ $(document).ready(function(){
                             clearInterval(percentage);
                         }
                     }
+                    if(val[1] == "404"){
+                        alert("Error has occured");
+                        clearInterval(percentage);
+                    }
 
                     // return val;
                     
-                }
+                },
+                error: function(){
+                    console.log("ERROR: Request Failed to reach server");
+                    clearInterval(percentage);
+                }                
+
             });
         }, 10);
         // if(AJAXComplete){
