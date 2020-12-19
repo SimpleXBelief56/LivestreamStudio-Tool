@@ -1,9 +1,3 @@
-# test algorthim
-# By Kevin Gonzaez (SimpleXTeam Leader)
-
-
-
-
 # -*- coding: utf-8 -*-
 # Livestream Verse Auto Parser
 # By Kevin Gonzalez
@@ -91,22 +85,6 @@ class LivestreamStudio:
    def getKeys(self):
       clearTerminal()
       return self.SavedVerseRequest
-
-   def debugValidation(self):
-      clearTerminal()
-      run = 0
-      length = 0
-      for verse in self.testWrite:
-         run += 1
-         print "Group {}".format(run)
-         for v in self.testWrite:
-            length += len(v)
-         print self.testWrite
-         print "Group {}: {}".format(run, length)
-
-   
-
-         
    
    def ParseVerses(self, keyValues, language):
       self.group2_hasStarted = True
@@ -124,8 +102,7 @@ class LivestreamStudio:
          holdvalue_counter = 0
          loopCounter = 0
          loopIterator = 0
-         # print innerListlength
-         # exit()
+
          for loopIterator in range(innerListlength):
             print "-------- TEST CONDITION {} ({}) --------".format(loopCounter, loopIterator)
             print "[+] Checking if (holdvalue) is empty"
@@ -134,18 +111,12 @@ class LivestreamStudio:
                   print "[+] List has nothing"
                   try:
                      if len(innerList[loopIterator]) + len(innerList[loopIterator+1]) > 400:
-                        # print innerList[loopIterator]
-                        # PressEnterToContinue()
-
-
                         holdvalue.append(innerList[loopIterator])
                         self.testWrite.append(holdvalue)
                         holdvalue = []
                         holdvalue.append(innerList[loopIterator+1])
-
                      else:
                         print innerList[loopIterator]
-                        # PressEnterToContinue()
                         holdvalue.extend((innerList[loopIterator], innerList[loopIterator+1]))
                         print "[+] Extending List"
                   except IndexError:
@@ -157,21 +128,17 @@ class LivestreamStudio:
 
                   #checksum holdvalue elements
                   for holdValueCounter in holdvalue:
-                     # print "[+] Read -> {}".format(holdValueCounter)
                      holdvalue_counter += len(holdValueCounter)
 
                   print "[+] Total: {} | with checksum {}".format(getlength(), getlength()+holdvalue_counter)
 
 
-                  # for iterator in range(tempVar):
                   if len(innerList[loopIterator]) + holdvalue_counter < 400:
                      print "[+] Value is still less than the maximum ({}, {}, {})".format(loopIterator, innerList[loopIterator], len(innerList[loopIterator])+holdvalue_counter)
-                  # if len(innerList[loopIterator]) - len(holdvalue[iterator]) > 0:
-                     # print "[+] Checking Difference: {} - {}".format(len(innerList[loopIterator]) - len(holdvalue[iterator]))
+
                      print "[+] InnerList (keyvalues): {}".format(innerList)
 
                      # check if element already exists inside if the list
-
                      try:
                         if innerList[loopIterator+1] in holdvalue:
                            loopIterator += 2
@@ -185,22 +152,16 @@ class LivestreamStudio:
 
 
                   else:
-                     # print "[+] BreakingPoint {} ({})".format(len(holdvalue[iterator]) - len(innerList[loopIterator]), innerList[loopIterator])
-
                      y = 0
                      for vCheck in holdvalue:
                         y += len(vCheck)
 
-                     
                      self.testWrite.append(holdvalue)
-
-                     # print "[/\] Value is still less than the maximum ({}, {}, {})".format(loopIterator, innerList[loopIterator], len(innerList[loopIterator])+holdvalue_counter)
                      print "[+] Checked Element {} ({})".format(innerList[loopIterator], len(innerList[loopIterator]) + holdvalue_counter)
                      print "[+] Reached Max Value: {}".format(y)
                      print "[+] Sending List: {}".format(holdvalue)
                      print "[+] Sending Parameter -> {}".format(holdvalue)
                      print "[+] Send Write List: {}".format(self.testWrite)
-                     # clearList(holdvalue)
                      
                      holdvalue = []
                      loopCounter += 1
@@ -220,12 +181,7 @@ class LivestreamStudio:
 
 
    def appendDictionary(self, book, chapter, verses):
-      # print "appendDictionary: {}".format(verses)
-      self.SavedVerseRequest["{}:{}".format(book, chapter)] = verses
-      # for saved in self.SavedVerseRequest:
-      #    print "saved values: {}".format(saved)
-      #    for s in self.SavedVerseRequest[saved]:
-      #       print "\t saved list: {}".format(s)      
+      self.SavedVerseRequest["{}:{}".format(book, chapter)] = verses   
 
    def writeFiles(self):
       # Write lines to file
@@ -258,8 +214,7 @@ class LivestreamStudio:
       self.group2_percentage = 0
       self.book = ""
       self.verse1 = 0
-      self.verse2 = 0
-      # setUnicodeEncoding()   
+      self.verse2 = 0  
 
    def getPercentage(self):
       self.percentage = 0
@@ -283,19 +238,9 @@ class LivestreamStudio:
             # return (self.percentage, self.http_GET_Status)
       else:
          return (self.percentage, self.http_GET_Status)
-
-
-      # for verses in self.testWrite:
-      #    fileName = book.replace(":", "")
-      #    # if os.path.exists(str(os.getcwd) + fileName + ".txt") == False:
-      #    #    os.makedirs("{}.txt".format(fileName))
-      #    with open("{}.txt".format(fileName), "w+") as fileHandler:
-      #       for verses in self.SavedVerseRequest[book]:
-      #          fileHandler.write(verses)
    
 
    def checkSpecialCharacters(self, verse, initialFalseValue=False):
-      # self.HtmlOutputReplace = ['(A)', '(B)']
       self.http_GET_Status = "Status: Fixing Verses / Unicode"
       self.x41SpecialCharacter = '(A)'
       self.x42SpecialCharacter = '(B)'
@@ -321,11 +266,8 @@ class LivestreamStudio:
                   verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, '')
             else:
                verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, '')
-            # return verse
          else:
             verse = self.pVerse.replace(self.x41SpecialCharacter, '')
-            # return verse
-      # else:
 
       if self.x43SpecialCharacter in verse:
          if self.x44SpecialCharacter in verse:
@@ -337,11 +279,8 @@ class LivestreamStudio:
                   verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, '')
             else:
                verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, '')
-            # return verse
          else:
             verse = verse.replace(self.x43SpecialCharacter, '')
-            # return verse
-      # else:
 
       # Fix (E) unicode bug
       if self.x45SpecialCharacter in verse:
@@ -353,7 +292,6 @@ class LivestreamStudio:
 
       if self.x41BracketSpecialCharacter in verse:
          if self.x42BracketSpecialCharacter in verse:
-            # check for single spaces before replacing
             if verse[verse.find(self.x42BracketSpecialCharacter)+3].isalpha():
                if self.pVerse[verse.find(self.x42BracketSpecialCharacter)-1].isalpha():
                   verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, ' ')
@@ -361,11 +299,8 @@ class LivestreamStudio:
                   verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, '')
             else:
                verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, '')
-            # return verse
          else:
             verse = verse.replace(self.x41BracketSpecialCharacter, '')
-            # return verse
-      # else:
 
       if self.x43BracketSpecialCharacter in verse:
          if self.x44BracketSpecialCharacter in verse:
@@ -377,15 +312,9 @@ class LivestreamStudio:
                   verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, '')
             else:
                verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, '')
-            # return verse
          else:
             verse = verse.replace(self.x43BracketSpecialCharacter, '')
-            # return verse
-      # else:
-      
 
-      # print "Verse: {}".format(verse)
-      # remove spaces before start of string
       if verse[0] == " ":
          verse = verse[1:]
          # print "Removed Spaces: {}".format(verse)
@@ -460,8 +389,6 @@ class LivestreamStudio:
                   print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.verse1)
                   exit(1)
          else:
-            # print "Successful Request ({})".format(singleRequest.status_code)
-            # print "Retrieving class from common element"
             HtmlParser = BeautifulSoup(singleRequest.content, 'lxml')
             commonElements = HtmlParser.find_all('div', {'class': 'passage-content'})
             for x in commonElements:
@@ -471,7 +398,6 @@ class LivestreamStudio:
                   e = m.encode('ascii', 'ignore')
                   self.returnedOutput = self.checkSpecialCharacters(e)
                   self.group1_percentage = int((float(int(self.verse1))/int(self.verse1)*0.5*100))
-                  # print "Single Verse: {}".format(self.returnedOutput)
       else:
          print "--------------- {} {}:{}-{} ----------------".format(book, chapter, self.verse1, self.verse2)
          self.requestCounter = self.verse1
@@ -479,7 +405,6 @@ class LivestreamStudio:
             self.group1_percentage = int((float(self.requestCounter)/int(self.verse2)*0.5*100))
             self.http_GET_Status = "Status: Requesting Verses ({}/{})".format(self.requestCounter, self.verse2)
             multiRequest = requests.get("https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest))
-            # print "URL: https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest)
             if "No results found." in multiRequest.text:
                try:
                   raise ValueError
@@ -487,7 +412,6 @@ class LivestreamStudio:
                   print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.requestCounter)
                   self.error_callback = True
             else:
-               # print "Successful Request ({})".format(multiRequest.status_code)
                HtmlParser = BeautifulSoup(multiRequest.content, 'lxml')
                commonElements = HtmlParser.find_all('div', {'class': 'passage-content'})
                for x in commonElements:
@@ -500,34 +424,24 @@ class LivestreamStudio:
                      m = v.text
                      if language == "English":
                         e = m.encode('ascii', 'ignore')
-                        # print "Without checkSpecialCharacters: {}".format(e)
                      else:
                         e = m.encode('utf-8')
                         holdVerses.append(e)
-                        # print "NO CHECKS: {}".format(e)
-                        # print e.decode('latin')
-                     # print e
                      if self.requestCounter == 1:
                         self.returnedOutput = self.checkSpecialCharacters(e, True)
                      else:
                         self.returnedOutput = self.checkSpecialCharacters(e)
                      if language == "English":
                         holdVerses.append(self.returnedOutput)
-                     # print "{} -> Length: {}".format(self.returnedOutput, len(self.returnedOutput))
                self.requestCounter += 1
                if self.requestCounter == self.verse2+1:
-                  # print "Pass To Function: {}".format(holdVerses)
                   print "[+] HoldVerses: {}".format(holdVerses)
-
-
-                  #debug
                   print "[DEBUG]: holdverses loop"
                   
                   for v in holdVerses:
                      holdVerses[holdVerses.index(v)] = holdVerses[holdVerses.index(v)].replace("\xc2\xa0", " ")
 
                   for vc in holdVerses:
-                     # setUnicodeEncoding()
                      removeUnicodeEncoding()
                      print holdVerses[holdVerses.index(vc)]
                      
@@ -536,9 +450,6 @@ class LivestreamStudio:
                            holdVerses[holdVerses.index(vc)] = holdVerses[holdVerses.index(vc)].replace("    ", "").replace("   ","")
                         else:
                            holdVerses[holdVerses.index(vc)] = holdVerses[holdVerses.index(vc)].replace("    ", "")
-                     # else:
-                     #    print "[DEBUG BREAKPOINT]: No Spaces Found"
-                        # PressEnterToContinue()
 
                   setUnicodeEncoding()
 
