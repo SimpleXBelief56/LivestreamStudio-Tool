@@ -247,7 +247,7 @@ class LivestreamStudio:
    def getData(self):
       self.jsonData = []
       for verses in self.testWrite:
-         self.jsonData.append("".join(verses))
+         self.jsonData.append(" ".join(verses))
 
       return self.jsonData
 
@@ -264,7 +264,9 @@ class LivestreamStudio:
    def getPercentage(self):
       self.percentage = 0
       if self.error_callback == True:
+         self.reset()
          return (self.percentage, "404", "ERROR: Unable To Fetch Query")
+
       if self.group1_hasStarted:
          if self.group2_hasStarted:
             self.percentage = self.group1_percentage + self.group2_percentage
