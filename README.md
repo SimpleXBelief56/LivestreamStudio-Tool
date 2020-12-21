@@ -148,4 +148,216 @@ for x in commonElements:
            else:
               holdVerses[holdVerses.index(vc)] = holdVerses[holdVerses.index(vc)].replace("    ", "")
 ```
+After we went through and checked for <br> and **&nbsp**, we then check for special type of character found within the text itself, adn the reason why its special is because those special characters are actual links, but instead they are single characters with square-brackets around them like so
+```
+[a], [b], [c], [d], [e]
+```
+These characters are unneseccary, so we remove them inside the **checkSpecialCharacters**
+```python
+ def checkSpecialCharacters(self, verse, initialFalseValue=False):
+      self.http_GET_Status = "Status: Fixing Verses / Unicode"
+      self.x41SpecialCharacter = '(A)'
+      self.x42SpecialCharacter = '(B)'
+      self.x43SpecialCharacter = '(C)'
+      self.x44SpecialCharacter = '(D)'
+      self.x45SpecialCharacter = '(E)'
 
+      self.x41BracketSpecialCharacter = '[a]'
+      self.x42BracketSpecialCharacter = '[b]'
+      self.x43BracketSpecialCharacter = '[c]'
+      self.x44BracketSpecialCharacter = '[d]'
+
+
+      self.pVerse = verse
+
+      if self.x41SpecialCharacter in self.pVerse:
+         if self.x42SpecialCharacter in self.pVerse:
+            # check for single spaces before replacing
+            if self.pVerse[self.pVerse.find(self.x42SpecialCharacter)+3].isalpha():
+               if self.pVerse[self.pVerse.find(self.x42SpecialCharacter)-1].isalpha():
+                  verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, ' ')
+               else:
+                  verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, '')
+            else:
+               verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, '')
+         else:
+            verse = self.pVerse.replace(self.x41SpecialCharacter, '')
+
+      if self.x43SpecialCharacter in verse:
+         if self.x44SpecialCharacter in verse:
+            # check for single spaces before replacing
+            if verse[verse.find(self.x43SpecialCharacter)+3].isalpha():
+               if verse[verse.find(self.x44SpecialCharacter)-1].isalpha():
+                  verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, ' ')
+               else:
+                  verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, '')
+            else:
+               verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, '')
+         else:
+            verse = verse.replace(self.x43SpecialCharacter, '')
+
+      # Fix (E) unicode bug
+      if self.x45SpecialCharacter in verse:
+         if verse[verse.find(self.x45SpecialCharacter)+3].isalpha():
+            verse = verse.replace(self.x45SpecialCharacter, '')
+         else:
+            verse = verse.replace(self.x45SpecialCharacter, ' ')
+
+
+      if self.x41BracketSpecialCharacter in verse:
+         if self.x42BracketSpecialCharacter in verse:
+            if verse[verse.find(self.x42BracketSpecialCharacter)+3].isalpha():
+               if self.pVerse[verse.find(self.x42BracketSpecialCharacter)-1].isalpha():
+                  verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, ' ')
+               else:
+                  verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, '')
+            else:
+               verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, '')
+         else:
+            verse = verse.replace(self.x41BracketSpecialCharacter, '')
+
+      if self.x43BracketSpecialCharacter in verse:
+         if self.x44BracketSpecialCharacter in verse:
+            # check for single spaces before replacing
+            if verse[verse.find(self.x43BracketSpecialCharacter)+3].isalpha():
+               if verse[verse.find(self.x44BracketSpecialCharacter)-1].isalpha():
+                  verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, ' ')
+               else:
+                  verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, '')
+            else:
+               verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, '')
+         else:
+            verse = verse.replace(self.x43BracketSpecialCharacter, '')
+
+      if verse[0] == " ":
+         verse = verse[1:]
+         # print "Removed Spaces: {}".format(verse)
+
+      if verse[0].isdigit() == True:
+         if verse[1].isalpha() == True:
+            # Format Correctly
+            verse = verse.replace(verse[0], "{} ".format(verse[0]))
+            # print "Final Format: {}".format(verse)
+
+      if verse[0].isdigit() == True:
+         if verse[1].isdigit() == True:
+            if verse[2].isalpha() == True:
+               verse = verse.replace(verse[:2], "{} ".format(verse[:2]))
+            if verse[2].isdigit() == True:
+               verse = verse.replace(verse[:3], "{} ".format(verse[:3]))
+
+      if initialFalseValue == True:
+         if verse[0].isdigit() == True:
+            verse = verse.replace(verse[0], str(1))
+
+      print "[+] Returning Verse: {}".format(verse)
+      return verse
+```
+***
+After every verse has been requested and all special characters have been removed, we then move into the formatting stage, where we seperate by 400 characters. Livestream Studio 
+only supports up to 400 characters per row in the data table. Normally if we were to do it manually, we would put all the verses together and seperate by 5 lines, but in this 
+case we can't do that, so we seperate by 400 characters. Instead of using the doing all at once, we decided to count each element inside the list where all the verses are saved. 
+We use a for loop to iterate over that list, and we count the length. While counting the length, we keep adding the verses from the current position inside the list until we 
+reach 400 characters. Since the type of data passed through the function is a type **DICT**, we need to iterate twice, the second one being the where the actual verses are at. 
+The algorithm we used to complete this task is over complicated cause of the way we keep count. First we keep count by adding, then once the list where all the grouped verses 
+are added start to fill up, we count the difference. For example:
+```python
+if len(holdvalue) == 0:
+    print "[+] List has nothing"
+    try:
+       if len(innerList[loopIterator]) + len(innerList[loopIterator+1]) > 400:
+          holdvalue.append(innerList[loopIterator])
+          self.testWrite.append(holdvalue)
+          holdvalue = []
+          holdvalue.append(innerList[loopIterator+1])
+       else:
+          print innerList[loopIterator]
+          holdvalue.extend((innerList[loopIterator], innerList[loopIterator+1]))
+          print "[+] Extending List"
+    except IndexError:
+       # IndexError: last element inside of list
+       print "[-] IndexError: {}".format(innerList[loopIterator])
+       holdvalue.append(innerList[loopIterator].encode("utf-8"))
+```
+In this first **if** statement we check if the length of holdValue is zero, if so, just append the first two verses if and only if they both don't exceed 400 characters, but if they then append the first verse, and right after append the second verse with other ones. The else statement continues with the algorithm, until done.
+```python
+else:
+     tempVar = len(holdvalue)
+
+     #checksum holdvalue elements
+     for holdValueCounter in holdvalue:
+        holdvalue_counter += len(holdValueCounter)
+
+     print "[+] Total: {} | with checksum {}".format(getlength(), getlength()+holdvalue_counter)
+
+
+     if len(innerList[loopIterator]) + holdvalue_counter < 400:
+        print "[+] Value is still less than the maximum ({}, {}, {})".format(loopIterator, innerList[loopIterator], len(innerList[loopIterator])+holdvalue_counter)
+
+        print "[+] InnerList (keyvalues): {}".format(innerList)
+
+        # check if element already exists inside if the list
+        try:
+           if innerList[loopIterator+1] in holdvalue:
+              loopIterator += 2
+              loopCounter += 1
+              continue
+           else:
+              print "[+] Appending To List: {}".format(innerList[loopIterator+1])
+              holdvalue.append(innerList[loopIterator+1])
+        except IndexError:
+           holdvalue.append(innerList[loopIterator])
+
+
+     else:
+        # DEBUGGING PURPOSES
+        y = 0
+        for vCheck in holdvalue:
+           y += len(vCheck)
+
+        self.testWrite.append(holdvalue)
+        print "[+] Checked Element {} ({})".format(innerList[loopIterator], len(innerList[loopIterator]) + holdvalue_counter)
+        print "[+] Reached Max Value: {}".format(y)
+        print "[+] Sending List: {}".format(holdvalue)
+        print "[+] Sending Parameter -> {}".format(holdvalue)
+        print "[+] Send Write List: {}".format(self.testWrite)
+
+        holdvalue = []
+        loopCounter += 1
+        continue
+
+self.group2_percentage = int((float(loopCounter)/int(innerListlength)*0.5*100))
+self.http_GET_Status = "Status: Formatting For Livestream ({}/{})".format(loopCounter+1, innerListlength)
+loopCounter += 1
+holdvalue_counter = 0
+# print holdvalue
+
+self.finish_parse_time = time.time() - start_parse_time
+self.group2_percentage = int((float(loopCounter)/int(innerListlength)*0.5*100))
+self.testWrite.append(holdvalue)
+```
+***
+Once we are done with everything is ready for use, we send the data to **getData()** function, which will iterate over the list with grouped verses, and join each list. Now 
+before any confusion arises, even though we grouped the verses before in the algorithm, the verses still need to be grouped in the form of a string. The reason for this is 
+because the algorithm groups the verses like so:
+```
+[['A','B','C','D']['E','F','G','H']]
+ ^---------------^ ^--------------^
+      GROUP 1           GROUP 2
+```
+After we join each element within each group together with spaces added, we return the data back to AJAX which sends the request.
+```python
+def getData(self):
+    self.jsonData = []
+    for verses in self.testWrite:
+       self.jsonData.append(" ".join(verses))
+
+    return self.jsonData
+```
+***
+# FAQS
+
+**1. Will there be an offline version if we ever need to do it where there is no internet connection?**
+A: Currently there is no offline version cause of the way this workds, but we are working on it, and will release it as soon as possible
+**2. Is there an application/program that we can use rather than the website?**
+A: Currently there is no application/program that you can utilize at the moment because of dependicies that it needs, but we are working on to with the offline version.
