@@ -360,6 +360,7 @@ def getData(self):
 **1. Will there be an offline version if we ever need to do it where there is no internet connection?**
 
 A: Currently there is no offline version cause of the way this workds, but we are working on it, and will release it as soon as possible
+
 **2. Is there an application/program that we can use rather than the website?**
 
 A: Currently there is no application/program that you can utilize at the moment because of dependicies that it needs, but we are working on to with the offline version.
