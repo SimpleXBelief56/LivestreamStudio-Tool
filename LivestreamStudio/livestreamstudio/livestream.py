@@ -175,7 +175,8 @@ class LivestreamStudio:
 
       self.finish_parse_time = time.time() - start_parse_time
       self.group2_percentage = int((float(loopCounter)/int(innerListlength)*0.5*100))
-      self.testWrite.append(holdvalue)
+      if holdvalue != []:
+         self.testWrite.append(holdvalue)
       
 
 
