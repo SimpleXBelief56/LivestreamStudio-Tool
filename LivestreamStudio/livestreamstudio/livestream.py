@@ -122,7 +122,10 @@ class LivestreamStudio:
                   except IndexError:
                      # IndexError: last element inside of list
                      print "[-] IndexError: {}".format(innerList[loopIterator])
-                     holdvalue.append(innerList[loopIterator].encode("utf-8"))
+                     try:
+                        holdvalue.append(innerList[loopIterator].encode("utf-8"))
+                     except:
+                        holdvalue.append(innerList[loopIterator])
             else:
                   tempVar = len(holdvalue)
 
