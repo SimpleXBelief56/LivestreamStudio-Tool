@@ -6,6 +6,16 @@ Parse bible verses for Vimeo Livestream with this easy-to-use tool. With one cli
   * Flask
   * flask_bcrypt
   * langdetect
+
+# Setup
+
+Go into the "LivestreamStudio" folder, and run:
+
+```
+python main.py
+```
+
+which will setup a web server running on localhost on port 5000.
   
 # How it works?
 
