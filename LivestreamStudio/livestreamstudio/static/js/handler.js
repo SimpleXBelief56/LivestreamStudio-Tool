@@ -62,8 +62,6 @@ function requestParsedVersesJSON(book, chapter, verse1, verse2, language){
         dataType: "json",
         data: {book_field: book, chapter_field: chapter, verse1_field: verse1, verse2_field: verse2, language_field: language},
         success: function(requestedData){
-            // console.log(requestedData);
-            // var e = length(requestedData)
             AJAXRequestValue = requestedData;
             for(var i = 0; i < requestedData.length; i++){
                 AJAXRequestValue[i] = requestedData[i];
@@ -73,14 +71,9 @@ function requestParsedVersesJSON(book, chapter, verse1, verse2, language){
             }
             writeData(book, chapter);
             return requestedData
-            // parsedVersesArray = requestedData;
         }
     })
     return AJAXRequestValue;
-    
-    // .done(function(){
-    //     alert('Done' + e)
-    // })
 }
 
 function getPercentage(){
@@ -108,15 +101,6 @@ function getPercentage(){
             
         }
     });
-    
-    // .done(function(){
-    //     var percentage = setInterval(getPercentage(), 1000);
-    //     if(AJAXComplete){
-    //         clearInterval(percentage);
-    //         // xhor.abort();
-
-    //     }
-    // })
     if(AJAXComplete){
         xhor.abort();
     }
@@ -177,22 +161,7 @@ $(document).ready(function(){
                 }                
 
             });
-        }, 10);
-        // if(AJAXComplete){
-        //     alert("AJAXComplete: TRUE");
-        //     clearInterval(percentage); 
-        // } else {
-        //     console.log("ajaxcomplete is false");
-        // }
-        // var percentage = getPercentage();
-        // console.log('outside function' + percentage);
-        // alert(percentage)
-        // if(percentage == "100"){
-        //     clearInterval(percentage);
-        // }
-        // for(var i = 0; i < requestedInformation.length(); i++){
-        //     alert(requestedInformation[i]);
-        // }
+        }, 100); //10
     })
 })
 
