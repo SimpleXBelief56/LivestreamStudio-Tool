@@ -2,6 +2,7 @@ var progressBar = document.querySelector('.w-0');
 var progressBarText = document.querySelector('.progress-val-text');
 var progressBarStatus = document.querySelector('.progress-status');
 var resultCard = document.getElementById("resultSection");
+var copy = undefined;
 var PreserveValue = 0;
 var AJAXRequestValue = [];
 var AJAXComplete = false;
@@ -18,7 +19,23 @@ function Delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function writeData(book_param, chapter_param){
+function CopyToClipboard(str_buffer){
+    var spwnText = document.createElement("textarea");
+    spwnText.value = str_buffer;
+    document.body.appendChild(spwnText);
+    spwnText.select();
+    document.execCommand("Copy");
+    spwnText.remove();
+    // var range = document.createRange();
+    // range.selectNode(str_buffer);
+    // window.setSelection().removeAllRanges();
+    // window.setSelection().addRanges(range);
+    // document.execCommand("copy");
+    // window.getSelection().removeAllRanges();
+    // console.log("Data has been copied to the clipboard");
+}
+
+async function writeData(book_param, chapter_param, first_verse_param, second_verse_param){
     $(document).ready(async function(){
         $(".progress-row").addClass("animate__animated animate__fadeOut").promise().done(async function(){
             await Delay(900);
@@ -37,9 +54,9 @@ async function writeData(book_param, chapter_param){
             <div class="col-lg-12 mb-5">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">${book_param} ${chapter_param}</h5>
-                        <p class="card-text">${AJAXRequestValue[i]}</p>
-                        <a href="#" class="btn btn-primary">Copy</a>
+                        <h5 class="card-title">${book_param} ${chapter_param}:${first_verse_param}-${second_verse_param}</h5>
+                        <p id="parsedData" class="card-text">${AJAXRequestValue[i]}</p>
+                        <a href="#" class="btn btn-primary copy-button">Copy</a>
                     </div>
                 </div>
             </div>
@@ -49,6 +66,11 @@ async function writeData(book_param, chapter_param){
     
             resultCard.innerHTML += htmlOutput;
         }
+        copy = $(".copy-button").click(function(e){
+            console.log(e);
+            console.log(e.target.parentElement.childNodes[3].innerText);
+            CopyToClipboard(e.target.parentElement.childNodes[3].innerText);
+        })
     })
 }
 
@@ -69,7 +91,7 @@ function requestParsedVersesJSON(book, chapter, verse1, verse2, language){
                 // Out Of Memory Error (Potential Buffer Overflow)
                 // AJAXRequestValue.push(requestedData[i]);
             }
-            writeData(book, chapter);
+            writeData(book, chapter, verse1, verse2);
             return requestedData
         }
     })
@@ -151,9 +173,6 @@ $(document).ready(function(){
                         alert("Error has occured");
                         clearInterval(percentage);
                     }
-
-                    // return val;
-                    
                 },
                 error: function(){
                     console.log("ERROR: Request Failed to reach server");
@@ -163,10 +182,5 @@ $(document).ready(function(){
             });
         }, 100);
     })
+
 })
-
-
-
-
-
-
