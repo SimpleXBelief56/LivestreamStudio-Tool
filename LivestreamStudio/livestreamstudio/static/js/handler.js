@@ -26,13 +26,6 @@ function CopyToClipboard(str_buffer){
     spwnText.select();
     document.execCommand("Copy");
     spwnText.remove();
-    // var range = document.createRange();
-    // range.selectNode(str_buffer);
-    // window.setSelection().removeAllRanges();
-    // window.setSelection().addRanges(range);
-    // document.execCommand("copy");
-    // window.getSelection().removeAllRanges();
-    // console.log("Data has been copied to the clipboard");
 }
 
 async function writeData(book_param, chapter_param, first_verse_param, second_verse_param){
@@ -87,9 +80,6 @@ function requestParsedVersesJSON(book, chapter, verse1, verse2, language){
             AJAXRequestValue = requestedData;
             for(var i = 0; i < requestedData.length; i++){
                 AJAXRequestValue[i] = requestedData[i];
-
-                // Out Of Memory Error (Potential Buffer Overflow)
-                // AJAXRequestValue.push(requestedData[i]);
             }
             writeData(book, chapter, verse1, verse2);
             return requestedData
@@ -182,5 +172,4 @@ $(document).ready(function(){
             });
         }, 100);
     })
-
 })
