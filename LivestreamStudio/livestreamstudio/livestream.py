@@ -246,6 +246,7 @@ class LivestreamStudio:
 
    def checkSpecialCharacters(self, verse, initialFalseValue=False):
       self.http_GET_Status = "Status: Fixing Verses / Unicode"
+      self.specialCharactersList = ['(A)','(B)','(C)','(D)','(E)','[a]','[b]','[c]','[d]']
       self.x41SpecialCharacter = '(A)'
       self.x42SpecialCharacter = '(B)'
       self.x43SpecialCharacter = '(C)'
@@ -258,66 +259,31 @@ class LivestreamStudio:
       self.x44BracketSpecialCharacter = '[d]'
 
 
+      self.basics = [',','.','?',';']
+
+
       self.pVerse = verse
 
-      if self.x41SpecialCharacter in self.pVerse:
-         if self.x42SpecialCharacter in self.pVerse:
-            # check for single spaces before replacing
-            if self.pVerse[self.pVerse.find(self.x42SpecialCharacter)+3].isalpha():
-               if self.pVerse[self.pVerse.find(self.x42SpecialCharacter)-1].isalpha():
-                  verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, ' ')
+      # go through list
+      for specialCharacter in self.specialCharactersList:
+         if specialCharacter in self.pVerse:
+            try:
+               if self.pVerse[self.pVerse.find(specialCharacter)+3].isalpha():
+                  if self.pVerse[self.pVerse.find(specialCharacter)-1].isalpha():
+                     self.pVerse = self.pVerse.replace(specialCharacter, ' ')
+                  else:
+                     self.pVerse = self.pVerse.replace(specialCharacter, '')
                else:
-                  verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, '')
-            else:
-               verse = self.pVerse.replace(self.x41SpecialCharacter, '').replace(self.x42SpecialCharacter, '')
-         else:
-            verse = self.pVerse.replace(self.x41SpecialCharacter, '')
-
-      if self.x43SpecialCharacter in verse:
-         if self.x44SpecialCharacter in verse:
-            # check for single spaces before replacing
-            if verse[verse.find(self.x43SpecialCharacter)+3].isalpha():
-               if verse[verse.find(self.x44SpecialCharacter)-1].isalpha():
-                  verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, ' ')
+                  self.pVerse = self.pVerse.replace(specialCharacter, '')
+            except IndexError:
+               if self.pVerse[self.pVerse.find(specialCharacter)-1].isalpha():
+                  self.pVerse = self.pVerse.replace(specialCharacter, ' ')
                else:
-                  verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, '')
-            else:
-               verse = verse.replace(self.x43SpecialCharacter, '').replace(self.x44SpecialCharacter, '')
-         else:
-            verse = verse.replace(self.x43SpecialCharacter, '')
+                  self.pVerse = self.pVerse.replace(specialCharacter, '')
+                  continue
 
-      # Fix (E) unicode bug
-      if self.x45SpecialCharacter in verse:
-         if verse[verse.find(self.x45SpecialCharacter)+3].isalpha():
-            verse = verse.replace(self.x45SpecialCharacter, '')
-         else:
-            verse = verse.replace(self.x45SpecialCharacter, ' ')
+      verse = self.pVerse
 
-
-      if self.x41BracketSpecialCharacter in verse:
-         if self.x42BracketSpecialCharacter in verse:
-            if verse[verse.find(self.x42BracketSpecialCharacter)+3].isalpha():
-               if self.pVerse[verse.find(self.x42BracketSpecialCharacter)-1].isalpha():
-                  verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, ' ')
-               else:
-                  verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, '')
-            else:
-               verse = verse.replace(self.x41BracketSpecialCharacter, '').replace(self.x42BracketSpecialCharacter, '')
-         else:
-            verse = verse.replace(self.x41BracketSpecialCharacter, '')
-
-      if self.x43BracketSpecialCharacter in verse:
-         if self.x44BracketSpecialCharacter in verse:
-            # check for single spaces before replacing
-            if verse[verse.find(self.x43BracketSpecialCharacter)+3].isalpha():
-               if verse[verse.find(self.x44BracketSpecialCharacter)-1].isalpha():
-                  verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, ' ')
-               else:
-                  verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, '')
-            else:
-               verse = verse.replace(self.x43BracketSpecialCharacter, '').replace(self.x44BracketSpecialCharacter, '')
-         else:
-            verse = verse.replace(self.x43BracketSpecialCharacter, '')
 
       if verse[0] == " ":
          verse = verse[1:]
@@ -339,6 +305,14 @@ class LivestreamStudio:
       if initialFalseValue == True:
          if verse[0].isdigit() == True:
             verse = verse.replace(verse[0], str(1))
+
+      for basic in self.basics:
+         if basic in verse:
+            try:
+               if verse[verse.find(basic)+1].isalpha():
+                  verse = verse.replace(verse[verse.find(basic)], "{} ".format(verse[verse.find(basic)]))
+            except IndexError:
+               verse = verse.replace(verse[verse.find(basic)], "{} ".format(verse[verse.find(basic)]))
 
       print "[+] Returning Verse: {}".format(verse)
       return verse
