@@ -392,12 +392,16 @@ class LivestreamStudio:
                for x in commonElements:
                   if x.find('div',{'class': 'poetry'}) is not None:
                      breakHtmlTag = x.find('br')
-                     breakHtmlTag.string = u'\xa0'
-                     print x.find("br")
+                     if breakHtmlTag is not None:
+                        breakHtmlTag.string = u'\xa0'
+                        print x.find("br")
                   c = x.findChildren('p')
                   # Fix Indentation (&nbsp) Issue
                   specialIndent = x.find('span',{'class': 'indent-1-breaks'})
-                  specialIndent.string.replace_with(' ')
+                  try:
+                     specialIndent.string.replace_with(' ')
+                  except AttributeError:
+                     pass
                   for v in c:
                      m = v.text
                      if language == "English":
