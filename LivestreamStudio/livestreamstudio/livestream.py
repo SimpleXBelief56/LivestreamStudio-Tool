@@ -246,7 +246,7 @@ class LivestreamStudio:
 
    def checkSpecialCharacters(self, verse, initialFalseValue=False):
       self.http_GET_Status = "Status: Fixing Verses / Unicode"
-      self.specialCharactersList = ['(A)','(B)','(C)','(D)','(E)','[a]','[b]','[c]','[d]']
+      self.specialCharactersList = ['(A)','(B)','(C)','(D)','(E)','(F)','[a]','[b]','[c]','[d]','[f]']
       self.x41SpecialCharacter = '(A)'
       self.x42SpecialCharacter = '(B)'
       self.x43SpecialCharacter = '(C)'
@@ -260,6 +260,7 @@ class LivestreamStudio:
 
 
       self.basics = [',','.','?',';']
+      containsSeperationCharacters = False
 
 
       self.pVerse = verse
@@ -314,6 +315,7 @@ class LivestreamStudio:
             except IndexError:
                verse = verse.replace(verse[verse.find(basic)], "{} ".format(verse[verse.find(basic)]))
 
+      
       print "[+] Returning Verse: {}".format(verse)
       return verse
 
@@ -398,6 +400,9 @@ class LivestreamStudio:
                      breakHtmlTag.string = u'\xa0'
                      print x.find("br")
                   c = x.findChildren('p')
+                  # Fix Indentation (&nbsp) Issue
+                  specialIndent = x.find('span',{'class': 'indent-1-breaks'})
+                  specialIndent.string.replace_with(' ')
                   for v in c:
                      m = v.text
                      if language == "English":
