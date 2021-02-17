@@ -127,8 +127,6 @@ class LivestreamStudio:
                      except:
                         holdvalue.append(innerList[loopIterator])
             else:
-                  tempVar = len(holdvalue)
-
                   #checksum holdvalue elements
                   for holdValueCounter in holdvalue:
                      holdvalue_counter += len(holdValueCounter)
@@ -260,9 +258,6 @@ class LivestreamStudio:
 
 
       self.basics = [',','.','?',';']
-      containsSeperationCharacters = False
-
-
       self.pVerse = verse
 
       # go through list
