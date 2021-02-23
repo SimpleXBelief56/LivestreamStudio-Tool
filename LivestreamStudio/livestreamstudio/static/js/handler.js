@@ -6,6 +6,9 @@ var copy = undefined;
 var PreserveValue = 0;
 var AJAXRequestValue = [];
 var AJAXComplete = false;
+var AJAXRequestFailed = false;
+var AJAXRequestFailed_Status = undefined;
+var AJAXFailedReloadPage = false;
 var percentage = 0;
 
 
@@ -14,6 +17,7 @@ var book = undefined;
 var chapter = undefined;
 var verse1 = undefined;
 var verse2 = undefined;
+
 
 function Delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -68,7 +72,6 @@ async function writeData(book_param, chapter_param, first_verse_param, second_ve
 }
 
 
-
 function requestParsedVersesJSON(book, chapter, verse1, verse2, language){
     var parsedVersesArray = [];
     $.ajax({
@@ -83,6 +86,22 @@ function requestParsedVersesJSON(book, chapter, verse1, verse2, language){
             }
             writeData(book, chapter, verse1, verse2);
             return requestedData
+        },
+        error: function(error, exception){
+            var error_msg = ""
+            if(error.status === 0){
+                error_msg = "ParseTheVerse: Could not establish connection to the server, please verify your connection!";
+                console.error(error_msg);
+            } else if(error.status == 404) {
+                error_msg = "ParseTheVerse: The requested resource or page could not be found"
+                console.error(error_msg);
+            } else if(error.status == 500){
+                error_msg = "ParseTheVerse: An error has occured while parsing the verses. Please check log!"
+                console.error(error_msg);
+            }
+            // Request Failed!
+            AJAXRequestFailed = true;
+            AJAXRequestFailed_Status = error_msg;
         }
     })
     return AJAXRequestValue;
@@ -141,6 +160,11 @@ $(document).ready(function(){
                 type: "GET",
                 dataType: "json",
                 success: async function(val){
+                    if(AJAXRequestFailed){
+                        // Request for parse failed
+                        progressBarStatus.innerHTML = "ERROR: Failed To Request";
+                        clearInterval(percentage);
+                    }
                     progressBar.style.width = PreserveValue + "%";
                     progressBarText.innerHTML = PreserveValue + "%";
                     progressBarStatus.innerHTML = val[1];
@@ -155,12 +179,22 @@ $(document).ready(function(){
         
                         AJAXComplete = true;
                         if(AJAXComplete){
-                            console.log("CLEAROUT INTERVAL");
                             clearInterval(percentage);
+                            console.log("CLEAROUT INTERVAL");
                         }
                     }
                     if(val[1] == "404"){
-                        alert("Error has occured");
+                        // alert("Error has occured");
+                        console.error("showing toast");
+                        tata.error('Error has occured, Refreshing Page', "https://parsetheverse.ngrok.io/parse", {
+                            duration: 5000,
+                            onClick: function(){
+                                location.reload();
+                            },
+                            onClose: function(){
+                                location.reload();
+                            }
+                        })
                         clearInterval(percentage);
                     }
                 },
@@ -168,8 +202,7 @@ $(document).ready(function(){
                     console.log("ERROR: Request Failed to reach server");
                     clearInterval(percentage);
                 }                
-
             });
-        }, 100);
+        }, 400);
     })
 })
