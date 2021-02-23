@@ -320,7 +320,6 @@ class LivestreamStudio:
       return tempVar
 
 
-
    def makeRequest(self, book, chapter, verse1, verse2, language):
       self.SavedVerseRequest = {}
       self.group1_hasStarted = False
@@ -361,8 +360,9 @@ class LivestreamStudio:
                try:
                   raise ValueError
                except ValueError:
-                  print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.verse1)
-                  exit(1)
+                  print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.verse2)
+                  self.error_callback = True
+                  # exit(1)
          else:
             HtmlParser = BeautifulSoup(singleRequest.content, 'lxml')
             commonElements = HtmlParser.find_all('div', {'class': 'passage-content'})
@@ -380,7 +380,8 @@ class LivestreamStudio:
             self.group1_percentage = int((float(self.requestCounter)/int(self.verse2)*0.5*100))
             self.http_GET_Status = "Status: Requesting Verses ({}/{})".format(self.requestCounter, self.verse2)
             multiRequest = requests.get("https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.requestCounter, languageRequest))
-            if "No results found." in multiRequest.text:
+            validateRequest = requests.get("https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.verse2, languageRequest))
+            if "No results found." in validateRequest.text:
                try:
                   raise ValueError
                except ValueError:
