@@ -93,7 +93,7 @@ class LivestreamStudio:
 
 
       for x in keyValues:
-         print "\n\n"
+         print ("\n\n")
          holdvalue = []
 
 
@@ -104,11 +104,11 @@ class LivestreamStudio:
          loopIterator = 0
 
          for loopIterator in range(innerListlength):
-            print "-------- TEST CONDITION {} ({}) --------".format(loopCounter, loopIterator)
-            print "[+] Checking if (holdvalue) is empty"
+            print ("-------- TEST CONDITION {} ({}) --------".format(loopCounter, loopIterator))
+            print ("[+] Checking if (holdvalue) is empty")
 
             if len(holdvalue) == 0:
-                  print "[+] List has nothing"
+                  print ("[+] List has nothing")
                   try:
                      if len(innerList[loopIterator]) + len(innerList[loopIterator+1]) > 400:
                         holdvalue.append(innerList[loopIterator])
@@ -116,12 +116,12 @@ class LivestreamStudio:
                         holdvalue = []
                         holdvalue.append(innerList[loopIterator+1])
                      else:
-                        print innerList[loopIterator]
+                        print (innerList[loopIterator])
                         holdvalue.extend((innerList[loopIterator], innerList[loopIterator+1]))
-                        print "[+] Extending List"
+                        print ("[+] Extending List")
                   except IndexError:
                      # IndexError: last element inside of list
-                     print "[-] IndexError: {}".format(innerList[loopIterator])
+                     print ("[-] IndexError: {}".format(innerList[loopIterator]))
                      try:
                         holdvalue.append(innerList[loopIterator].encode("utf-8"))
                      except:
@@ -131,13 +131,13 @@ class LivestreamStudio:
                   for holdValueCounter in holdvalue:
                      holdvalue_counter += len(holdValueCounter)
 
-                  print "[+] Total: {} | with checksum {}".format(getlength(), getlength()+holdvalue_counter)
+                  print ("[+] Total: {} | with checksum {}".format(getlength(), getlength()+holdvalue_counter))
 
 
                   if len(innerList[loopIterator]) + holdvalue_counter < 400:
-                     print "[+] Value is still less than the maximum ({}, {}, {})".format(loopIterator, innerList[loopIterator], len(innerList[loopIterator])+holdvalue_counter)
+                     print ("[+] Value is still less than the maximum ({}, {}, {})".format(loopIterator, innerList[loopIterator], len(innerList[loopIterator])+holdvalue_counter))
 
-                     print "[+] InnerList (keyvalues): {}".format(innerList)
+                     print ("[+] InnerList (keyvalues): {}".format(innerList))
 
                      # check if element already exists inside if the list
                      try:
@@ -146,7 +146,7 @@ class LivestreamStudio:
                            loopCounter += 1
                            continue
                         else:
-                           print "[+] Appending To List: {}".format(innerList[loopIterator+1])
+                           print ("[+] Appending To List: {}".format(innerList[loopIterator+1]))
                            holdvalue.append(innerList[loopIterator+1])
                      except IndexError:
                         holdvalue.append(innerList[loopIterator])
@@ -158,11 +158,11 @@ class LivestreamStudio:
                         y += len(vCheck)
 
                      self.testWrite.append(holdvalue)
-                     print "[+] Checked Element {} ({})".format(innerList[loopIterator], len(innerList[loopIterator]) + holdvalue_counter)
-                     print "[+] Reached Max Value: {}".format(y)
-                     print "[+] Sending List: {}".format(holdvalue)
-                     print "[+] Sending Parameter -> {}".format(holdvalue)
-                     print "[+] Send Write List: {}".format(self.testWrite)
+                     print ("[+] Checked Element {} ({})".format(innerList[loopIterator], len(innerList[loopIterator]) + holdvalue_counter))
+                     print ("[+] Reached Max Value: {}".format(y))
+                     print ("[+] Sending List: {}".format(holdvalue))
+                     print ("[+] Sending Parameter -> {}".format(holdvalue))
+                     print ("[+] Send Write List: {}".format(self.testWrite))
                      
                      holdvalue = []
                      loopCounter += 1
@@ -188,7 +188,7 @@ class LivestreamStudio:
    def writeFiles(self):
       # Write lines to file
       self.formatVerseList = []
-      print self.testWrite
+      print (self.testWrite)
 
       for verses in self.testWrite:
          self.formatVerseList.append("".join(verses))
@@ -311,7 +311,7 @@ class LivestreamStudio:
                verse = verse.replace(verse[verse.find(basic)], "{} ".format(verse[verse.find(basic)]))
 
       
-      print "[+] Returning Verse: {}".format(verse)
+      print ("[+] Returning Verse: {}".format(verse))
       return verse
 
 
@@ -351,16 +351,16 @@ class LivestreamStudio:
       try:
          languageRequest = self.LanguageKey[language.lower()]
       except:
-         print "[-] Encountered an error trying to set language"
+         print ("[-] Encountered an error trying to set language")
          exit(1)
       if self.verse1 is None:
-         print "--------------- {} {}:{} ----------------".format(book, chapter, self.verse1)
+         print ("--------------- {} {}:{} ----------------".format(book, chapter, self.verse1))
          singleRequest = requests.get("https://www.biblegateway.com/passage/?search={}+{}%3A{}&version={}".format(book, chapter, self.verse1, languageRequest))
          if "No results found." in singleRequest.text:
                try:
                   raise ValueError
                except ValueError:
-                  print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.verse2)
+                  print ("[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.verse2))
                   self.error_callback = True
                   # exit(1)
          else:
@@ -374,7 +374,7 @@ class LivestreamStudio:
                   self.returnedOutput = self.checkSpecialCharacters(e)
                   self.group1_percentage = int((float(int(self.verse1))/int(self.verse1)*0.5*100))
       else:
-         print "--------------- {} {}:{}-{} ----------------".format(book, chapter, self.verse1, self.verse2)
+         print ("--------------- {} {}:{}-{} ----------------".format(book, chapter, self.verse1, self.verse2))
          self.requestCounter = self.verse1
          while self.requestCounter <= self.verse2+1:
             self.group1_percentage = int((float(self.requestCounter)/int(self.verse2)*0.5*100))
@@ -385,7 +385,7 @@ class LivestreamStudio:
                try:
                   raise ValueError
                except ValueError:
-                  print "[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.requestCounter)
+                  print ("[-] Unable to fetch query for {} {}:{}".format(book, chapter, self.requestCounter))
                   self.error_callback = True
             else:
                HtmlParser = BeautifulSoup(multiRequest.content, 'lxml')
@@ -395,7 +395,7 @@ class LivestreamStudio:
                      breakHtmlTag = x.find('br')
                      if breakHtmlTag is not None:
                         breakHtmlTag.string = u'\xa0'
-                        print x.find("br")
+                        print (x.find("br"))
                   c = x.findChildren('p')
                   # Fix Indentation (&nbsp) Issue
                   specialIndent = x.find('span',{'class': 'indent-1-breaks'})
@@ -418,15 +418,15 @@ class LivestreamStudio:
                         holdVerses.append(self.returnedOutput)
                self.requestCounter += 1
                if self.requestCounter == self.verse2+1:
-                  print "[+] HoldVerses: {}".format(holdVerses)
-                  print "[DEBUG]: holdverses loop"
+                  print ("[+] HoldVerses: {}".format(holdVerses))
+                  print ("[DEBUG]: holdverses loop")
                   
                   for v in holdVerses:
                      holdVerses[holdVerses.index(v)] = holdVerses[holdVerses.index(v)].replace("\xc2\xa0", " ")
 
                   for vc in holdVerses:
                      removeUnicodeEncoding()
-                     print holdVerses[holdVerses.index(vc)]
+                     print (holdVerses[holdVerses.index(vc)])
                      
                      if "     " in holdVerses[holdVerses.index(vc)]:
                         if "   " in holdVerses[holdVerses.index(vc)]:

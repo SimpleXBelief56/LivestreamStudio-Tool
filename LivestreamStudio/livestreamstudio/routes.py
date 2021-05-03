@@ -1,5 +1,5 @@
 from flask import render_template, url_for, redirect, flash, request, jsonify
-from forms import RequestVerses
+from livestream.forms import RequestVerses
 from livestreamstudio import app
 from livestream import LivestreamStudio
 import os
