@@ -1,7 +1,7 @@
 from flask import render_template, url_for, redirect, flash, request, jsonify
-from livestream.forms import RequestVerses
+from livestreamstudio.forms import RequestVerses
 from livestreamstudio import app
-from livestream import LivestreamStudio
+from .livestream import LivestreamStudio
 import os
 import time
 

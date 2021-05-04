@@ -45,7 +45,7 @@ def removeUnicodeEncoding():
 def write(vParamToWrite):
    for x in vParamToWrite:
       vHTMLReturn = " ".join(x)
-      print vHTMLReturn
+      print (vHTMLReturn)
     
 
 def getlength():
@@ -258,7 +258,9 @@ class LivestreamStudio:
 
 
       self.basics = [',','.','?',';']
-      self.pVerse = verse
+      self.pVerse = str(verse, 'utf-8')
+      
+      
 
       # go through list
       for specialCharacter in self.specialCharactersList:

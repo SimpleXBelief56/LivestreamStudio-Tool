@@ -5,4 +5,4 @@ import os
 
 app = Flask(__name__)
 
-from livestreamstudio import routes
+from . import routes
